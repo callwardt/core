@@ -1028,13 +1028,13 @@ abstract class AEntry
      */
     protected function getUpgradeHelperMinorVersions($majorVersion)
     {
-        $old = $this->getMinorVersionOld();
-        $new = $this->getMinorVersionNew();
+        $old = $this->getMajorVersionOld() . '.' . $this->getMinorVersionOld();
+        $new = $this->getMajorVersionNew() . '.' . $this->getMinorVersionNew();
 
         return array_filter(
             $this->getUpgradeHelperVersions($majorVersion . LC_DS),
-            function ($var) use ($old, $new) {
-                return version_compare($old, $var, '<') && version_compare($new, $var, '>=');
+            function ($var) use ($majorVersion, $old, $new) {
+                return version_compare($old, $majorVersion . '.' . $var, '<') && version_compare($new, $majorVersion . '.' . $var, '>=');
             }
         );
     }
